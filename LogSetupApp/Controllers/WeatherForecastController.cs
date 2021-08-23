@@ -9,7 +9,7 @@ namespace LogSetupApp.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class WeatherForecastController : LoggedController
     {
         private static readonly string[] Summaries = new[]
         {
@@ -18,7 +18,7 @@ namespace LogSetupApp.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger):base(logger)
         {
             _logger = logger;
         }
@@ -26,6 +26,7 @@ namespace LogSetupApp.Controllers
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
+            _logger.LogInformation(HttpContext.Request.Path);
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
